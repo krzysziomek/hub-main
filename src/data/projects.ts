@@ -1,26 +1,35 @@
-import { createFileRoute } from "@tanstack/react-router";
+export type Project = {
+  name: string;
+  url: string;
+  description: string;
+  emoji: string;
+  accent: "pink" | "sky" | "mint" | "sunny" | "grape";
+};
 
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
-}
+// Add new projects here — they'll appear automatically on the page.
+export const projects: Project[] = [
+  {
+    name: "cytaty.scooby.boo",
+    url: "https://cytaty.scooby.boo",
+    description:
+      "Polski generator cytatów politycznych. Bez złych intencji — dla zabawy.",
+    emoji: "🗣️",
+    accent: "pink",
+  },
+  {
+    name: "dowcipy.scooby.boo",
+    url: "https://dowcipy.scooby.boo",
+    description:
+      "Baza dowcipów uratowana z nieistniejącej już aplikacji DowcipyXXL.",
+    emoji: "😂",
+    accent: "sunny",
+  },
+  {
+    name: "polskieaudio.scooby.boo",
+    url: "https://polskieaudio.scooby.boo",
+    description:
+      "Wyszukiwarka filmów i seriali z polskim dubbingiem lub lektorem.",
+    emoji: "🎬",
+    accent: "sky",
+  },
+];
