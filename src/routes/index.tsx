@@ -1,16 +1,98 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import hamster from "@/assets/hamster.png";
 import { projects } from "@/data/projects";
 import { ProjectCard } from "@/components/ProjectCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Moon, Sun, Languages } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("theme");
+    const prefersDark =
+      stored === "dark" ||
+      (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    setIsDark(prefersDark);
+    document.documentElement.classList.toggle("dark", prefersDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+  };
+
   return (
     <main className="relative min-h-screen overflow-hidden">
+      {/* Top-right controls */}
+      <div className="absolute right-4 top-4 z-20 flex items-center gap-2 sm:right-6 sm:top-6">
+        <Dialog>
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              aria-label="English info"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/80 backdrop-blur px-3 py-2 text-xs font-semibold text-foreground/80 shadow-sm transition-all hover:scale-105 hover:shadow-pop"
+            >
+              <Languages className="h-4 w-4" aria-hidden />
+              EN
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">
+                <span className="text-rainbow animate-gradient">Hi! 👋</span>
+              </DialogTitle>
+              <DialogDescription className="pt-2 text-sm leading-relaxed text-foreground/80">
+                Welcome to <strong className="text-foreground">scooby.boo</strong> — my
+                personal hub of small, vibecoded webapps. I'm{" "}
+                <strong className="text-foreground">Krzyś</strong>, based in Poland.
+                <br />
+                <br />
+                Heads up: I mainly speak Polish, and most of my projects are built{" "}
+                <strong className="text-foreground">in Polish</strong> for a Polish
+                audience — so things here might not make much sense if you don't speak
+                the language. Sorry about that!
+                <br />
+                <br />
+                Feel free to poke around anyway. 🐹
+                <br />
+                <br />
+                <span className="text-xs text-foreground/50">
+                  Not affiliated with the Scooby-Doo brand in any way.
+                </span>
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur text-foreground/80 shadow-sm transition-all hover:scale-105 hover:shadow-pop"
+        >
+          {isDark ? (
+            <Sun className="h-4 w-4" aria-hidden />
+          ) : (
+            <Moon className="h-4 w-4" aria-hidden />
+          )}
+        </button>
+      </div>
+
       {/* Floating decorative blobs */}
       <div
         aria-hidden
@@ -66,7 +148,7 @@ function Index() {
           >
             Cześć! Jestem{" "}
             <span className="font-bold text-foreground">Krzyś</span> i tu mieszkają
-            moje vibecodowane webappki, skrypty w Pythonie i boty na Discorda.
+            moje vibecodowane webappki.
           </motion.p>
 
           <motion.div
@@ -75,7 +157,7 @@ function Index() {
             transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
             className="mt-6 flex flex-wrap items-center justify-center gap-2"
           >
-            {["webapps", "python", "discord bots", "🐹 hamster powered"].map((t) => (
+            {["webapps", "🐹 hamster powered"].map((t) => (
               <span
                 key={t}
                 className="rounded-full border border-border bg-card/80 backdrop-blur px-3 py-1 text-xs font-semibold text-foreground/70 shadow-sm"
