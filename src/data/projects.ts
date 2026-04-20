@@ -9,26 +9,23 @@ export type Project = {
 // Add new projects here — they'll appear automatically on the page.
 export const projects: Project[] = [
   {
-    name: "cytaty.scooby.boo",
+    name: "Cytaty",
     url: "https://cytaty.scooby.boo",
-    description:
-      "Polski generator cytatów politycznych. Bez złych intencji — dla zabawy.",
+    description: "Polski generator cytatów politycznych. Bez złych intencji — dla zabawy.",
     emoji: "🗣️",
     accent: "pink",
   },
   {
-    name: "dowcipy.scooby.boo",
+    name: "Dowcipy",
     url: "https://dowcipy.scooby.boo",
-    description:
-      "Baza dowcipów uratowana z nieistniejącej już aplikacji DowcipyXXL.",
+    description: "Baza dowcipów uratowana z nieistniejącej już aplikacji DowcipyXXL.",
     emoji: "😂",
     accent: "sunny",
   },
   {
-    name: "polskieaudio.scooby.boo",
+    name: "Polskie Audio",
     url: "https://polskieaudio.scooby.boo",
-    description:
-      "Wyszukiwarka filmów i seriali z polskim dubbingiem lub lektorem.",
+    description: "Wyszukiwarka filmów i seriali z polskim dubbingiem lub lektorem.",
     emoji: "🎬",
     accent: "sky",
   },
