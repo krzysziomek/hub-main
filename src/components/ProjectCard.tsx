@@ -58,11 +58,11 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="truncate text-xl sm:text-2xl font-bold text-foreground">
+            <h3 className="truncate text-xl sm:text-2xl font-bold text-[oklch(0.22_0.05_300)]">
               {project.name}
             </h3>
           </div>
-          <p className="mt-2 text-sm sm:text-base text-foreground/75 leading-relaxed">
+          <p className="mt-2 text-sm sm:text-base text-[oklch(0.22_0.05_300/0.78)] leading-relaxed">
             {project.description}
           </p>
         </div>
@@ -74,7 +74,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
           live
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/90 animate-pulse" />
         </span>
-        <span className="inline-flex items-center gap-1 text-sm font-semibold text-foreground/70 transition-transform group-hover:translate-x-1">
+        <span className="inline-flex items-center gap-1 text-sm font-semibold text-[oklch(0.22_0.05_300/0.75)] transition-transform group-hover:translate-x-1">
           odwiedź
           <svg
             xmlns="http://www.w3.org/2000/svg"
