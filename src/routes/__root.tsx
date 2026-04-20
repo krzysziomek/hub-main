@@ -29,11 +29,19 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "scooby.boo — Krzyś's project hub" },
+      {
+        name: "description",
+        content:
+          "scooby.boo — a colorful hub of Krzyś's vibecoded webapps, Python scripts and Discord bots. Guarded by one fluffy white hamster.",
+      },
+      { name: "author", content: "Krzyś" },
+      { property: "og:title", content: "scooby.boo — Krzyś's project hub" },
+      {
+        property: "og:description",
+        content:
+          "A colorful hub of Krzyś's vibecoded webapps, Python scripts and Discord bots.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
@@ -42,6 +50,19 @@ export const Route = createRootRoute({
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap",
       },
     ],
   }),
