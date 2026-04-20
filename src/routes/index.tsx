@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import hamster from "@/assets/hamster.png";
 import { projects } from "@/data/projects";
 import { ProjectCard } from "@/components/ProjectCard";
+import { Starfield } from "@/components/Starfield";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,8 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [isDark, setIsDark] = useState(false);
+  const [squeaking, setSqueaking] = useState(false);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -37,8 +40,48 @@ function Index() {
     localStorage.setItem("theme", next ? "dark" : "light");
   };
 
+  const playSqueak = () => {
+    try {
+      const AC =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
+      if (!audioCtxRef.current) audioCtxRef.current = new AC();
+      const ctx = audioCtxRef.current;
+      if (ctx.state === "suspended") void ctx.resume();
+      const now = ctx.currentTime;
+
+      // Two quick chirps for a cute "squee-eek"
+      const chirp = (start: number, freqStart: number, freqEnd: number, dur: number) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freqStart, start);
+        osc.frequency.exponentialRampToValueAtTime(freqEnd, start + dur);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.25, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + dur + 0.05);
+      };
+      chirp(now, 1400, 2200, 0.12);
+      chirp(now + 0.13, 1800, 2600, 0.18);
+    } catch {
+      // audio unavailable — silent fail
+    }
+  };
+
+  const handleHamsterClick = () => {
+    if (squeaking) return;
+    playSqueak();
+    setSqueaking(true);
+    window.setTimeout(() => setSqueaking(false), 800);
+  };
+
   return (
     <main className="relative min-h-screen overflow-hidden">
+      <Starfield />
       {/* Top-right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2 sm:right-6 sm:top-6">
         <Dialog>
@@ -122,13 +165,23 @@ function Index() {
               aria-hidden
               className="absolute inset-0 -z-10 m-auto h-48 w-48 rounded-full bg-rainbow blur-2xl opacity-60 animate-gradient"
             />
-            <img
-              src={hamster}
-              alt="scooby.boo mascot — a fluffy white hamster waving hello"
-              width={1024}
-              height={1024}
-              className="h-48 w-48 sm:h-56 sm:w-56 object-contain drop-shadow-[0_15px_30px_oklch(0.7_0.22_340/0.4)] animate-float"
-            />
+            <button
+              type="button"
+              onClick={handleHamsterClick}
+              aria-label="Pet the hamster"
+              className="block cursor-pointer rounded-full focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/50"
+            >
+              <img
+                src={hamster}
+                alt="scooby.boo mascot — a fluffy white hamster waving hello"
+                width={1024}
+                height={1024}
+                draggable={false}
+                className={`h-48 w-48 sm:h-56 sm:w-56 object-contain drop-shadow-[0_15px_30px_oklch(0.7_0.22_340/0.4)] select-none ${
+                  squeaking ? "animate-squeak" : "animate-float"
+                }`}
+              />
+            </button>
           </motion.div>
 
           <motion.h1
