@@ -62,26 +62,50 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 1.25rem;
+  --background: oklch(0.985 0.01 320);
+  --foreground: oklch(0.22 0.05 300);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.22 0.05 300);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --popover-foreground: oklch(0.22 0.05 300);
+  --primary: oklch(0.7 0.22 340);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.78 0.18 220);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.96 0.02 320);
+  --muted-foreground: oklch(0.5 0.05 300);
+  --accent: oklch(0.82 0.2 90);
+  --accent-foreground: oklch(0.22 0.05 300);
+  --destructive: oklch(0.65 0.25 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0.04 320);
+  --input: oklch(0.9 0.04 320);
+  --ring: oklch(0.7 0.22 340);
+
+  --hot-pink: oklch(0.7 0.22 340);
+  --sky: oklch(0.78 0.18 220);
+  --mint: oklch(0.82 0.16 165);
+  --sunny: oklch(0.88 0.18 90);
+  --grape: oklch(0.62 0.22 300);
+
+  --gradient-rainbow: linear-gradient(
+    135deg,
+    oklch(0.78 0.18 340) 0%,
+    oklch(0.82 0.18 280) 25%,
+    oklch(0.78 0.18 220) 50%,
+    oklch(0.82 0.16 165) 75%,
+    oklch(0.88 0.18 90) 100%
+  );
+  --gradient-bg: radial-gradient(
+      ellipse at top left,
+      oklch(0.92 0.1 340 / 0.7),
+      transparent 60%
+    ),
+    radial-gradient(ellipse at top right, oklch(0.9 0.12 220 / 0.6), transparent 60%),
+    radial-gradient(ellipse at bottom, oklch(0.92 0.12 90 / 0.5), transparent 60%);
+  --shadow-pop: 0 12px 40px -10px oklch(0.7 0.22 340 / 0.45);
+  --shadow-card: 0 20px 50px -20px oklch(0.4 0.1 300 / 0.25);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -139,6 +163,101 @@
 
   body {
     background-color: var(--color-background);
+    background-image: var(--gradient-bg);
+    background-attachment: fixed;
     color: var(--color-foreground);
+    font-family:
+      "Quicksand",
+      ui-rounded,
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Fredoka", "Quicksand", system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .text-rainbow {
+    background: var(--gradient-rainbow);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .bg-rainbow {
+    background: var(--gradient-rainbow);
+  }
+
+  .shadow-pop {
+    box-shadow: var(--shadow-pop);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(-2deg);
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes blob {
+  0%,
+  100% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  }
+  33% {
+    border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%;
+  }
+  66% {
+    border-radius: 30% 70% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+.animate-wiggle {
+  animation: wiggle 2.5s ease-in-out infinite;
+}
+.animate-blob {
+  animation: blob 12s ease-in-out infinite;
+}
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
 }
