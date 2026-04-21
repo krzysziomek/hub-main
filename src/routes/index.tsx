@@ -22,6 +22,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [isDark, setIsDark] = useState(false);
   const [squeaking, setSqueaking] = useState(false);
+  const [petCount, setPetCount] = useState(0);
+  const [counterPop, setCounterPop] = useState(false);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
@@ -31,7 +34,37 @@ function Index() {
       (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
     setIsDark(prefersDark);
     document.documentElement.classList.toggle("dark", prefersDark);
+
+    const storedPets = parseInt(localStorage.getItem("petCount") ?? "0", 10);
+    if (!Number.isNaN(storedPets)) setPetCount(storedPets);
   }, []);
+
+  useEffect(() => {
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1; // -1..1
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setMouse({ x, y }));
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const milestones: { count: number; label: string; emoji: string }[] = [
+    { count: 1, label: "Pierwszy głask!", emoji: "🐾" },
+    { count: 10, label: "Przyjaciel chomika", emoji: "🌟" },
+    { count: 25, label: "Mistrz głaskania", emoji: "🏆" },
+    { count: 50, label: "Chomikowy guru", emoji: "🧀" },
+    { count: 100, label: "Legenda!", emoji: "👑" },
+    { count: 500, label: "Czy ty w ogóle śpisz?", emoji: "🚀" },
+  ];
+  const currentMilestone = [...milestones]
+    .reverse()
+    .find((m) => petCount >= m.count);
 
   const toggleTheme = () => {
     const next = !isDark;
@@ -77,11 +110,22 @@ function Index() {
     playSqueak();
     setSqueaking(true);
     window.setTimeout(() => setSqueaking(false), 800);
+    setPetCount((prev) => {
+      const next = prev + 1;
+      try {
+        localStorage.setItem("petCount", String(next));
+      } catch {
+        // storage unavailable — silent fail
+      }
+      return next;
+    });
+    setCounterPop(true);
+    window.setTimeout(() => setCounterPop(false), 400);
   };
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <Starfield />
+      <Starfield mouse={mouse} />
       {/* Top-right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2 sm:right-6 sm:top-6">
         <Dialog>
