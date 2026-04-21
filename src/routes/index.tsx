@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [squeaking, setSqueaking] = useState(false);
   const [petCount, setPetCount] = useState(0);
   const [counterPop, setCounterPop] = useState(false);
