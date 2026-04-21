@@ -29,9 +29,7 @@ function Index() {
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
-    const prefersDark =
-      stored === "dark" ||
-      (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const prefersDark = stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
     setIsDark(prefersDark);
     document.documentElement.classList.toggle("dark", prefersDark);
 
@@ -62,9 +60,7 @@ function Index() {
     { count: 100, label: "Legenda!", emoji: "👑" },
     { count: 500, label: "Czy ty w ogóle śpisz?", emoji: "🚀" },
   ];
-  const currentMilestone = [...milestones]
-    .reverse()
-    .find((m) => petCount >= m.count);
+  const currentMilestone = [...milestones].reverse().find((m) => petCount >= m.count);
 
   const toggleTheme = () => {
     const next = !isDark;
@@ -76,9 +72,7 @@ function Index() {
   const playSqueak = () => {
     try {
       const AC =
-        window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext })
-          .webkitAudioContext;
+        window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (!audioCtxRef.current) audioCtxRef.current = new AC();
       const ctx = audioCtxRef.current;
       if (ctx.state === "suspended") void ctx.resume();
@@ -145,23 +139,19 @@ function Index() {
                 <span className="text-rainbow animate-gradient">Hi! 👋</span>
               </DialogTitle>
               <DialogDescription className="pt-2 text-sm leading-relaxed text-foreground/80">
-                Welcome to <strong className="text-foreground">scooby.boo</strong> — my
-                personal hub of small, vibecoded webapps. I'm{" "}
-                <strong className="text-foreground">Krzyś</strong>, based in Poland.
+                Welcome to <strong className="text-foreground">scooby.boo</strong> — my personal hub of small, vibecoded
+                webapps. I'm <strong className="text-foreground">Krzyś</strong>, based in Poland.
                 <br />
                 <br />
                 Heads up: I mainly speak Polish, and most of my projects are built{" "}
-                <strong className="text-foreground">in Polish</strong> for a Polish
-                audience — so things here might not make much sense if you don't speak
-                the language. Sorry about that!
+                <strong className="text-foreground">in Polish</strong> for a Polish audience — so things here might not
+                make much sense if you don't speak the language. Sorry about that!
                 <br />
                 <br />
                 Feel free to poke around anyway. 🐹
                 <br />
                 <br />
-                <span className="text-xs text-foreground/50">
-                  Not affiliated with the Scooby-Doo brand in any way.
-                </span>
+                <span className="text-xs text-foreground/50">Not affiliated with the Scooby-Doo brand in any way.</span>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
@@ -172,19 +162,12 @@ function Index() {
           aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur text-foreground/80 shadow-sm transition-all hover:scale-105 hover:shadow-pop"
         >
-          {isDark ? (
-            <Sun className="h-4 w-4" aria-hidden />
-          ) : (
-            <Moon className="h-4 w-4" aria-hidden />
-          )}
+          {isDark ? <Sun className="h-4 w-4" aria-hidden /> : <Moon className="h-4 w-4" aria-hidden />}
         </button>
       </div>
 
       {/* Floating decorative blobs */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 dark:hidden"
-      >
+      <div aria-hidden className="pointer-events-none absolute inset-0 dark:hidden">
         <div
           className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
           style={{ transform: `translate3d(${mouse.x * 30}px, ${mouse.y * 30}px, 0)` }}
@@ -252,15 +235,9 @@ function Index() {
               className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur px-3 py-1.5 text-xs font-semibold text-foreground/80 shadow-sm"
             >
               <span aria-hidden>{currentMilestone.emoji}</span>
-              <span
-                className={`tabular-nums ${counterPop ? "animate-counter-pop inline-block" : ""}`}
-              >
-                {petCount}
-              </span>
+              <span className={`tabular-nums ${counterPop ? "animate-counter-pop inline-block" : ""}`}>{petCount}</span>
               <span className="text-foreground/50">·</span>
-              <span className="text-rainbow animate-gradient">
-                {currentMilestone.label}
-              </span>
+              <span className="text-rainbow animate-gradient">{currentMilestone.label}</span>
             </motion.div>
           )}
 
@@ -279,9 +256,8 @@ function Index() {
             transition={{ delay: 0.45, duration: 0.6 }}
             className="mt-4 max-w-xl text-base sm:text-lg text-foreground/70"
           >
-            Cześć! Jestem{" "}
-            <span className="font-bold text-foreground">Krzyś</span> i tu mieszkają
-            moje vibecodowane webappki.
+            Cześć! Jestem <span className="font-bold text-foreground">Krzyś</span> i tu mieszkają moje vibecodowane
+            webappki.
           </motion.p>
 
           <motion.div
@@ -314,9 +290,7 @@ function Index() {
               <h2 className="text-3xl sm:text-4xl font-bold">
                 Projekty <span className="inline-block animate-wiggle">✨</span>
               </h2>
-              <p className="mt-1 text-sm text-foreground/60">
-                Klik w kafelek = nowa karta z projektem.
-              </p>
+              <p className="mt-1 text-sm text-foreground/60">Klik w kafelek = nowa karta z projektem.</p>
             </div>
             <span className="rounded-full bg-rainbow px-3 py-1 text-xs font-bold text-white shadow-pop animate-gradient">
               {projects.length} live
@@ -335,12 +309,8 @@ function Index() {
           <div className="text-2xl animate-wiggle" aria-hidden>
             🐹
           </div>
-          <p className="text-xs text-foreground/50">
-            © {new Date().getFullYear()} scooby.boo · zrobione z miłością i serem
-          </p>
-          <p className="text-[10px] text-foreground/40">
-            niezwiązane z marką Scooby-Doo w żaden sposób
-          </p>
+          <p className="text-xs text-foreground/50">© {new Date().getFullYear()} scooby.boo · zrobione z miłością</p>
+          <p className="text-[10px] text-foreground/40">niezwiązane z marką Scooby-Doo w żaden sposób</p>
         </footer>
       </div>
     </main>
