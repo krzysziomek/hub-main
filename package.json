@@ -1,6 +1,5 @@
 {
-  "name": "scoobyboohub",
-  "homepage": "https://scooby.boo/",
+  "name": "scoobyboo",
   "private": true,
   "sideEffects": false,
   "type": "module",
