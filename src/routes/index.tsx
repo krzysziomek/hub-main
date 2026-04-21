@@ -243,6 +243,27 @@ function Index() {
             </button>
           </motion.div>
 
+          {petCount > 0 && currentMilestone && (
+            <motion.div
+              key={currentMilestone.count}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur px-3 py-1.5 text-xs font-semibold text-foreground/80 shadow-sm"
+            >
+              <span aria-hidden>{currentMilestone.emoji}</span>
+              <span
+                className={`tabular-nums ${counterPop ? "animate-counter-pop inline-block" : ""}`}
+              >
+                {petCount}
+              </span>
+              <span className="text-foreground/50">·</span>
+              <span className="text-rainbow animate-gradient">
+                {currentMilestone.label}
+              </span>
+            </motion.div>
+          )}
+
           <motion.h1
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
