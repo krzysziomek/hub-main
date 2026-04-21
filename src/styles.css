@@ -297,6 +297,36 @@
   }
 }
 
+@keyframes shooting-star {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(var(--angle, -20deg));
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--travel-x, 600px), var(--travel-y, 300px), 0)
+      rotate(var(--angle, -20deg));
+    opacity: 0;
+  }
+}
+
+@keyframes counter-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .animate-float {
   animation: float 5s ease-in-out infinite;
 }
@@ -318,4 +348,7 @@
 }
 .animate-squeak {
   animation: squeak-spin 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.animate-counter-pop {
+  animation: counter-pop 0.4s ease-out;
 }

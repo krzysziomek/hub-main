@@ -22,6 +22,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [isDark, setIsDark] = useState(false);
   const [squeaking, setSqueaking] = useState(false);
+  const [petCount, setPetCount] = useState(0);
+  const [counterPop, setCounterPop] = useState(false);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
@@ -31,7 +34,37 @@ function Index() {
       (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
     setIsDark(prefersDark);
     document.documentElement.classList.toggle("dark", prefersDark);
+
+    const storedPets = parseInt(localStorage.getItem("petCount") ?? "0", 10);
+    if (!Number.isNaN(storedPets)) setPetCount(storedPets);
   }, []);
+
+  useEffect(() => {
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1; // -1..1
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setMouse({ x, y }));
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const milestones: { count: number; label: string; emoji: string }[] = [
+    { count: 1, label: "Pierwszy głask!", emoji: "🐾" },
+    { count: 10, label: "Przyjaciel chomika", emoji: "🌟" },
+    { count: 25, label: "Mistrz głaskania", emoji: "🏆" },
+    { count: 50, label: "Chomikowy guru", emoji: "🧀" },
+    { count: 100, label: "Legenda!", emoji: "👑" },
+    { count: 500, label: "Czy ty w ogóle śpisz?", emoji: "🚀" },
+  ];
+  const currentMilestone = [...milestones]
+    .reverse()
+    .find((m) => petCount >= m.count);
 
   const toggleTheme = () => {
     const next = !isDark;
@@ -77,11 +110,22 @@ function Index() {
     playSqueak();
     setSqueaking(true);
     window.setTimeout(() => setSqueaking(false), 800);
+    setPetCount((prev) => {
+      const next = prev + 1;
+      try {
+        localStorage.setItem("petCount", String(next));
+      } catch {
+        // storage unavailable — silent fail
+      }
+      return next;
+    });
+    setCounterPop(true);
+    window.setTimeout(() => setCounterPop(false), 400);
   };
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <Starfield />
+      <Starfield mouse={mouse} />
       {/* Top-right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2 sm:right-6 sm:top-6">
         <Dialog>
@@ -139,18 +183,33 @@ function Index() {
       {/* Floating decorative blobs */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-[oklch(0.85_0.2_340/0.35)] blur-3xl animate-float"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-40 -right-32 h-[28rem] w-[28rem] rounded-full bg-[oklch(0.85_0.18_220/0.35)] blur-3xl animate-float"
-        style={{ animationDelay: "1.5s" }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-[oklch(0.88_0.18_90/0.35)] blur-3xl animate-float"
-        style={{ animationDelay: "3s" }}
-      />
+        className="pointer-events-none absolute inset-0 dark:hidden"
+      >
+        <div
+          className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+          style={{ transform: `translate3d(${mouse.x * 30}px, ${mouse.y * 30}px, 0)` }}
+        >
+          <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-[oklch(0.85_0.2_340/0.35)] blur-3xl animate-float" />
+        </div>
+        <div
+          className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+          style={{ transform: `translate3d(${mouse.x * -45}px, ${mouse.y * -45}px, 0)` }}
+        >
+          <div
+            className="absolute top-40 -right-32 h-[28rem] w-[28rem] rounded-full bg-[oklch(0.85_0.18_220/0.35)] blur-3xl animate-float"
+            style={{ animationDelay: "1.5s" }}
+          />
+        </div>
+        <div
+          className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+          style={{ transform: `translate3d(${mouse.x * 20}px, ${mouse.y * -25}px, 0)` }}
+        >
+          <div
+            className="absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-[oklch(0.88_0.18_90/0.35)] blur-3xl animate-float"
+            style={{ animationDelay: "3s" }}
+          />
+        </div>
+      </div>
 
       <div className="relative mx-auto max-w-5xl px-6 py-12 sm:py-20">
         {/* Hero */}
@@ -183,6 +242,27 @@ function Index() {
               />
             </button>
           </motion.div>
+
+          {petCount > 0 && currentMilestone && (
+            <motion.div
+              key={currentMilestone.count}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur px-3 py-1.5 text-xs font-semibold text-foreground/80 shadow-sm"
+            >
+              <span aria-hidden>{currentMilestone.emoji}</span>
+              <span
+                className={`tabular-nums ${counterPop ? "animate-counter-pop inline-block" : ""}`}
+              >
+                {petCount}
+              </span>
+              <span className="text-foreground/50">·</span>
+              <span className="text-rainbow animate-gradient">
+                {currentMilestone.label}
+              </span>
+            </motion.div>
+          )}
 
           <motion.h1
             initial={{ y: 20, opacity: 0 }}
