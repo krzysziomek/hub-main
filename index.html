@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var dark = stored ? stored === "dark" : true;
+          document.documentElement.classList.toggle("dark", dark);
+        } catch (e) {}
+      })();
+    </script>
 
     <title>scooby.boo — projekty Krzysia</title>
     <meta name="description" content="Kolorowe centrum vibecode'owanych stron Krzysia. Pilnowane przez dzielnego puchatego białego chomika!" />
