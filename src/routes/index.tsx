@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [squeaking, setSqueaking] = useState(false);
   const [petCount, setPetCount] = useState(0);
   const [counterPop, setCounterPop] = useState(false);
@@ -29,7 +29,7 @@ function Index() {
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
-    const prefersDark = stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const prefersDark = stored ? stored === "dark" : true;
     setIsDark(prefersDark);
     document.documentElement.classList.toggle("dark", prefersDark);
 
