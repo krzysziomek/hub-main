@@ -183,30 +183,33 @@ function Index() {
       {/* Floating decorative blobs */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-[oklch(0.85_0.2_340/0.35)] blur-3xl animate-float"
-        style={{
-          transform: `translate3d(${mouse.x * 30}px, ${mouse.y * 30}px, 0)`,
-          transition: "transform 300ms ease-out",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-40 -right-32 h-[28rem] w-[28rem] rounded-full bg-[oklch(0.85_0.18_220/0.35)] blur-3xl animate-float"
-        style={{
-          animationDelay: "1.5s",
-          transform: `translate3d(${mouse.x * -45}px, ${mouse.y * -45}px, 0)`,
-          transition: "transform 300ms ease-out",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-[oklch(0.88_0.18_90/0.35)] blur-3xl animate-float"
-        style={{
-          animationDelay: "3s",
-          transform: `translate3d(${mouse.x * 20}px, ${mouse.y * -25}px, 0)`,
-          transition: "transform 300ms ease-out",
-        }}
-      />
+        className="pointer-events-none absolute inset-0 dark:hidden"
+      >
+        <div
+          className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+          style={{ transform: `translate3d(${mouse.x * 30}px, ${mouse.y * 30}px, 0)` }}
+        >
+          <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-[oklch(0.85_0.2_340/0.35)] blur-3xl animate-float" />
+        </div>
+        <div
+          className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+          style={{ transform: `translate3d(${mouse.x * -45}px, ${mouse.y * -45}px, 0)` }}
+        >
+          <div
+            className="absolute top-40 -right-32 h-[28rem] w-[28rem] rounded-full bg-[oklch(0.85_0.18_220/0.35)] blur-3xl animate-float"
+            style={{ animationDelay: "1.5s" }}
+          />
+        </div>
+        <div
+          className="absolute inset-0 transition-transform duration-300 ease-out will-change-transform"
+          style={{ transform: `translate3d(${mouse.x * 20}px, ${mouse.y * -25}px, 0)` }}
+        >
+          <div
+            className="absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-[oklch(0.88_0.18_90/0.35)] blur-3xl animate-float"
+            style={{ animationDelay: "3s" }}
+          />
+        </div>
+      </div>
 
       <div className="relative mx-auto max-w-5xl px-6 py-12 sm:py-20">
         {/* Hero */}
